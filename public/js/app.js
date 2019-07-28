@@ -1864,15 +1864,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       countries: [],
-      country: {
-        id: '',
-        name: '',
-        description: ''
-      },
+      id: '',
+      name: '',
+      description: '',
+      // country: {
+      //     id: '',
+      //     name: '',
+      //     description: ''
+      // },
       country_id: '',
       edit: false
     };
@@ -1892,20 +1897,33 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
-    addArticle: function addArticle() {
+    addCountry: function addCountry() {
       var _this2 = this;
 
+      // alert('a');
+      // return false;
       if (this.edit === false) {
         // Add
-        axios.post('api/country').then(function (result) {
-          _this2.country.name = '', _this2.country.body = '', alert('Record Added');
+        axios.post('api/country', {
+          name: this.name,
+          description: this.description
+        }).then(function (result) {
+          _this2.name = '', _this2.description = '', alert('Record Added');
 
           _this2.fetchCountries();
         })["catch"](function (err) {
           console.log(err);
         });
       } else {// Update
+        // this.edit = false,
       }
+    },
+    editCountry: function editCountry(country) {
+      this.edit = true;
+      this.id = country.id;
+      this.country_id = country.id;
+      this.name = country.name;
+      this.description = country.description;
     },
     deleteCountry: function deleteCountry(id) {
       var _this3 = this;
@@ -37233,7 +37251,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.addArticle()
+              return _vm.addCountry()
             }
           }
         },
@@ -37244,19 +37262,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.country.name,
-                  expression: "country.name"
+                  value: _vm.name,
+                  expression: "name"
                 }
               ],
               staticClass: "form-control",
               attrs: { type: "text", placeholder: "Title" },
-              domProps: { value: _vm.country.name },
+              domProps: { value: _vm.name },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.country, "name", $event.target.value)
+                  _vm.name = $event.target.value
                 }
               }
             })
@@ -37268,19 +37286,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.country.description,
-                  expression: "country.description"
+                  value: _vm.description,
+                  expression: "description"
                 }
               ],
               staticClass: "form-control",
               attrs: { placeholder: "Description" },
-              domProps: { value: _vm.country.description },
+              domProps: { value: _vm.description },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.country, "description", $event.target.value)
+                  _vm.description = $event.target.value
                 }
               }
             })
@@ -37314,6 +37332,19 @@ var render = function() {
               }
             },
             [_vm._v("Delete")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning",
+              on: {
+                click: function($event) {
+                  return _vm.editCountry(country)
+                }
+              }
+            },
+            [_vm._v("Edit")]
           )
         ])
       })

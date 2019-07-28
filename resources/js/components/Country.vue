@@ -2,14 +2,14 @@
     <div>
         <h2>Countries</h2>
 
-        <form @submit.prevent="addCountry" class="mb-3">
+        <form @submit.prevent="addCountry()" class="mb-3">
             <div class="form-group">
                 <input type="text" placeholder="Title"
-                class="form-control" v-model="country.name">
+                class="form-control" v-model="name">
             </div>
             <div class="form-group">
                 <textarea class="form-control" placeholder="Description"
-                v-model="country.description"></textarea>
+                v-model="description"></textarea>
             </div>
             <button type="submit" class="btn btn-light btn-block">Save</button>
         </form>
@@ -20,6 +20,8 @@
         <hr>
         <button @click="deleteCountry(country.id)"
         class="btn btn-danger">Delete</button>
+        <button @click="editCountry(country)"
+        class="btn btn-warning">Edit</button>
         </div>
     </div>
 </template>
@@ -29,11 +31,14 @@ export default {
     data() {
         return {
             countries: [],
-            country: {
-                id: '',
-                name: '',
-                description: ''
-            },
+            id: '',
+            name: '',
+            description: '',
+            // country: {
+            //     id: '',
+            //     name: '',
+            //     description: ''
+            // },
             country_id: '',
             edit: false
         }
@@ -60,14 +65,17 @@ export default {
 
         addCountry() {
 
-            alert('a');
-            return false;
+            // alert('a');
+            // return false;
             if(this.edit === false) {
                 // Add
-                axios.post('api/country')
+                axios.post('api/country',{
+                    name: this.name,
+                    description: this.description
+                })
                 .then((result) => {
-                    this.country.name = '',
-                    this.country.description = '',
+                    this.name = '',
+                    this.description = '',
                     alert('Record Added');
                     this.fetchCountries();
                 }).catch((err) => {
@@ -76,7 +84,18 @@ export default {
             } 
             else {
                 // Update
+                // this.edit = false,
+
             }
+        },
+
+        editCountry(country) {
+            this.edit = true;
+
+            this.id = country.id;
+            this.country_id = country.id;
+            this.name = country.name;
+            this.description = country.description;
         },
 
         deleteCountry(id) {
