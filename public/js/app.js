@@ -1844,17 +1844,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      countries: []
+    };
   },
   created: function created() {
-    this.fetchCountries();
+    this.fetchCountries;
   },
-  methods: {
+  computed: {
     fetchCountries: function fetchCountries() {
+      var _this = this;
+
       axios.get('api/country').then(function (res) {
-        console.log(res.data);
+        _this.countries = res.data;
+        console.log(_this.countries);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -37158,16 +37168,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h2", [_vm._v("Countries")]),
+      _vm._v(" "),
+      _vm._l(_vm.countries, function(country, index) {
+        return _c("div", { key: index, staticClass: "card card-body mb-4" }, [
+          _c("h3", [_vm._v(_vm._s(country.name))])
+        ])
+      })
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h2", [_vm._v("Countries")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
