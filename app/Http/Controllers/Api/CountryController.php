@@ -83,8 +83,13 @@ class CountryController extends Controller
     {
         // Update a record
         $fill = Country::find($id);
-        $fill->update($request->all());
-        return response()->json($fill, 200);
+
+        $retVal = (is_null($fill)) ?
+        response()->json('Record not found', 404) :
+        [ $fill->update($request->all()),
+        response()->json($fill, 200) ] ;
+
+        return $retVal;
     }
 
     /**
@@ -97,7 +102,12 @@ class CountryController extends Controller
     {
         // Deleting specific record
         $fill =  Country::find($id);
-        $fill->delete();
-        return response()->json('Deleted', 204);
+        
+        $retVal = (is_null($fill)) ? 
+        response()->json('Record not found', 404) : 
+        [ $fill->delete(), 
+        response()->json('Deleted', 204) ] ;
+        
+        return $retVal;
     }
 }
