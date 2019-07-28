@@ -1849,16 +1849,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      countries: []
+      countries: [],
+      country: {
+        id: '',
+        name: '',
+        description: ''
+      },
+      country_id: '',
+      edit: false
     };
   },
   created: function created() {
-    this.fetchCountries;
+    this.fetchCountries();
   },
-  computed: {
+  computed: {},
+  methods: {
     fetchCountries: function fetchCountries() {
       var _this = this;
 
@@ -1868,6 +1891,36 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    addArticle: function addArticle() {
+      var _this2 = this;
+
+      if (this.edit === false) {
+        // Add
+        axios.post('api/country').then(function (result) {
+          _this2.country.name = '', _this2.country.body = '', alert('Record Added');
+
+          _this2.fetchCountries();
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else {// Update
+      }
+    },
+    deleteCountry: function deleteCountry(id) {
+      var _this3 = this;
+
+      // alert('12');
+      // return false;
+      if (confirm('You Sure?')) {
+        axios["delete"]("/api/country/".concat(id)).then(function (res) {
+          alert('Removed');
+
+          _this3.fetchCountries();
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     }
   }
 });
@@ -37173,9 +37226,95 @@ var render = function() {
     [
       _c("h2", [_vm._v("Countries")]),
       _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "mb-3",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addArticle()
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.country.name,
+                  expression: "country.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "Title" },
+              domProps: { value: _vm.country.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.country, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.country.description,
+                  expression: "country.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "Description" },
+              domProps: { value: _vm.country.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.country, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-light btn-block",
+              attrs: { type: "submit" }
+            },
+            [_vm._v("Save")]
+          )
+        ]
+      ),
+      _vm._v(" "),
       _vm._l(_vm.countries, function(country, index) {
         return _c("div", { key: index, staticClass: "card card-body mb-4" }, [
-          _c("h3", [_vm._v(_vm._s(country.name))])
+          _c("h3", [_vm._v(_vm._s(country.name))]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  return _vm.deleteCountry(country.id)
+                }
+              }
+            },
+            [_vm._v("Delete")]
+          )
         ])
       })
     ],
