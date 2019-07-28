@@ -1914,8 +1914,18 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (err) {
           console.log(err);
         });
-      } else {// Update
-        // this.edit = false,
+      } else {
+        // Update
+        axios.put("/api/country/".concat(this.id), {
+          name: this.name,
+          description: this.description
+        }).then(function (result) {
+          _this2.name = '', _this2.description = '', alert('Record Updated');
+
+          _this2.fetchCountries();
+        })["catch"](function (err) {
+          console.log(err);
+        });
       }
     },
     editCountry: function editCountry(country) {

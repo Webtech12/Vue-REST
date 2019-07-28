@@ -84,7 +84,18 @@ export default {
             } 
             else {
                 // Update
-                // this.edit = false,
+                axios.put(`/api/country/${this.id}`,{
+                    name: this.name,
+                    description: this.description
+                })
+                .then((result) => {
+                    this.name = '',
+                    this.description = '',
+                    alert('Record Updated');
+                    this.fetchCountries();
+                }).catch((err) => {
+                    console.log(err);
+                });
 
             }
         },
