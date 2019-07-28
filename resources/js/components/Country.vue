@@ -13,11 +13,18 @@ export default {
     },
 
     created() {
-        
+      this.fetchCountries();
     },
 
-    computed: {
-        fetchCountries() {}
+    methods: {
+        fetchCountries() {
+            axios.get('api/country')
+                .then(res  => {
+                    console.log(res.data);
+                }).catch(err => {
+                    console.log(err);
+                });
+        }
     },
 }
 </script>
